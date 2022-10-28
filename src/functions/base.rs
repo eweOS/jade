@@ -76,7 +76,6 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
     install::install(vec![
         "grub",
         "efibootmgr",
-        "grub-btrfs",
         "crystal-grub-theme",
         "os-prober",
         "crystal-branding",
@@ -128,7 +127,6 @@ pub fn install_bootloader_efi(efidir: PathBuf) {
 pub fn install_bootloader_legacy(device: PathBuf) {
     install::install(vec![
         "grub",
-        "grub-btrfs",
         "crystal-grub-theme",
         "os-prober",
         "crystal-branding",
