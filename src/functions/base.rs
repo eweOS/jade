@@ -159,7 +159,7 @@ pub fn install_bootloader_legacy(device: PathBuf) {
 }
 
 pub fn setup_timeshift() {
-    install(vec!["timeshift", "timeshift-autosnap"]);
+    install(vec!["timeshift", "timeshift-autosnap", "grub-btrfs"]);
     exec_eval(
         exec_chroot("timeshift", vec![String::from("--btrfs")]),
         "setup timeshift",
