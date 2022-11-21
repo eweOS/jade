@@ -55,6 +55,7 @@ pub fn install_base_packages(kernel: String) {
         "pipewire-pulse",
         "pipewire-alsa",
         "pipewire-jack",
+        "crystal-first-setup",
     ]);
     files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
 }
