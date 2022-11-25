@@ -132,6 +132,7 @@ fn install_sway() {
         "pipewire-pulse",
         "pipewire-alsa",
         "pipewire-jack",
+        "wireplumber",
         "sddm",
     ]);
     enable_dm("sddm");
@@ -148,6 +149,7 @@ fn install_lxqt() {
         "pipewire-pulse",
         "pipewire-alsa",
         "pipewire-jack",
+        "wireplumber",
         "sddm",
     ]);
     enable_dm("sddm");
@@ -162,6 +164,7 @@ fn install_enlightenment() {
         "pipewire-pulse",
         "pipewire-alsa",
         "pipewire-jack",
+        "wireplumber",
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
@@ -188,6 +191,7 @@ fn install_xfce() {
         "pipewire-pulse",
         "pipewire-jack",
         "pipewire-alsa",
+        "wireplumber",
         "pavucontrol",
     ]);
     files_eval(
@@ -208,6 +212,7 @@ fn install_mate() {
         "pipewire-pulse",
         "pipewire-alsa",
         "pipewire-jack",
+        "wireplumber",
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
@@ -231,6 +236,7 @@ fn install_cinnamon() {
         "pipewire-pulse",
         "pipewire-alsa",
         "pipewire-jack",
+        "wireplumber",
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
@@ -257,6 +263,7 @@ fn install_budgie() {
         "pipewire-pulse",
         "pipewire-alsa",
         "pipewire-jack",
+        "wireplumber",
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
@@ -285,6 +292,7 @@ fn install_kde() {
         "pipewire-pulse",
         "pipewire-alsa",
         "pipewire-jack",
+        "wireplumber",
         "sddm",
     ]);
     enable_dm("sddm");
@@ -299,6 +307,7 @@ fn install_gnome() {
         "pipewire-pulse",
         "pipewire-alsa",
         "pipewire-jack",
+        "wireplumber",
         "gdm",
     ]);
     enable_dm("gdm");
@@ -313,6 +322,7 @@ fn install_onyx() {
         "pipewire-pulse",
         "pipewire-alsa",
         "pipewire-jack",
+        "wireplumber",
         "gdm",
     ]);
     enable_dm("gdm");
