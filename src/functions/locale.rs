@@ -3,9 +3,6 @@ use crate::internal::*;
 
 pub fn set_timezone(timezone: &str) {
     exec_eval(
-        // Remember this should run in a chroot
-        // not on the host, as linking to /mnt/usr/share/zoneinfo
-        // will mean you're gonna have a bad time
         exec_chroot(
             "ln",
             vec![
@@ -27,6 +24,11 @@ pub fn set_locale(locale: String) {
         files::append_file("/mnt/etc/locale.gen", "en_US.UTF-8 UTF-8"),
         "add en_US.UTF-8 UTF-8 to locale.gen",
     );
+    files::create_file("/mnt/etc/locale.conf");
+    files_eval(
+        files::append_file("/mnt/etc/locale.conf", "LANG=en_US.UTF-8"),
+        "edit locale.conf",
+    );
     for i in (0..locale.split(' ').count()).step_by(2) {
         files_eval(
             files::append_file(
@@ -39,16 +41,21 @@ pub fn set_locale(locale: String) {
             ),
             "add locales to locale.gen",
         );
+        if locale.split(' ').collect::<Vec<&str>>()[i] != "en_US.UTF-8" {
+            files_eval(
+                files::sed_file(
+                    "/mnt/etc/locale.conf",
+                    "en_US.UTF-8",
+                    locale.split(' ').collect::<Vec<&str>>()[i]
+                ),
+                format!("Set locale {} in /etc/locale.conf", locale.split(' ').collect::<Vec<&str>>()[i]).as_str()
+            );
+        }
     }
     exec_eval(exec_chroot("locale-gen", vec![]), "generate locales");
-    files::create_file("/mnt/etc/locale.conf");
-    files_eval(
-        files::append_file("/mnt/etc/locale.conf", "LANG=en_US.UTF-8"),
-        "edit locale.conf",
-    );
 }
 
-pub fn set_keyboard(keyboard: &str) {
+pub fn set_keyboard(keyboard: &str, variant: &str) {
     files::create_file("/mnt/etc/vconsole.conf");
     files_eval(
         files::append_file(
@@ -57,4 +64,31 @@ pub fn set_keyboard(keyboard: &str) {
         ),
         "set keyboard layout",
     );
+    if variant.to_lowercase() == "normal" {
+        exec_eval(
+            exec::exec_chroot(
+                "gsettings",
+                vec![
+                    "set".to_string(),
+                    "org.gnome.desktop.input-sources".to_string(),
+                    "sources".to_string(),
+                    format!("[('xkb', '{keyboard})]")
+                ],
+            ),
+            "Set Keymap using gsettings"
+        );
+    } else {
+        exec_eval(
+            exec::exec_chroot(
+                "gsettings",
+                vec![
+                    "set".to_string(),
+                    "org.gnome.desktop.input-sources".to_string(),
+                    "sources".to_string(),
+                    format!("[('xkb', '{keyboard}+{variant})]")
+                ],
+            ),
+            "Set Keymap using gsettings"
+        );
+    }
 }
