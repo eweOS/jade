@@ -64,31 +64,4 @@ pub fn set_keyboard(keyboard: &str, variant: &str) {
         ),
         "set keyboard layout",
     );
-    if variant.to_lowercase() == "normal" {
-        exec_eval(
-            exec::exec_chroot(
-                "gsettings",
-                vec![
-                    "set".to_string(),
-                    "org.gnome.desktop.input-sources".to_string(),
-                    "sources".to_string(),
-                    format!("[('xkb', '{keyboard})]")
-                ],
-            ),
-            "Set Keymap using gsettings"
-        );
-    } else {
-        exec_eval(
-            exec::exec_chroot(
-                "gsettings",
-                vec![
-                    "set".to_string(),
-                    "org.gnome.desktop.input-sources".to_string(),
-                    "sources".to_string(),
-                    format!("[('xkb', '{keyboard}+{variant})]")
-                ],
-            ),
-            "Set Keymap using gsettings"
-        );
-    }
 }
