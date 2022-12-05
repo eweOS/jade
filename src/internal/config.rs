@@ -40,7 +40,6 @@ struct Bootloader {
 struct Locale {
     locale: Vec<String>,
     keymap: String,
-    variant: String,
     timezone: String,
 }
 
@@ -125,7 +124,7 @@ pub fn read_config(configpath: PathBuf) {
     log::info!("Using keymap : {}", config.locale.keymap);
     log::info!("Setting timezone : {}", config.locale.timezone);
     locale::set_locale(config.locale.locale.join(" "));
-    locale::set_keyboard(config.locale.keymap.as_str(), config.locale.variant.as_str());
+    locale::set_keyboard(config.locale.keymap.as_str());
     locale::set_timezone(config.locale.timezone.as_str());
     println!();
     log::info!("Hostname : {}", config.networking.hostname);
