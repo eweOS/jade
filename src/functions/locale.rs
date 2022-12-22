@@ -46,9 +46,13 @@ pub fn set_locale(locale: String) {
                 files::sed_file(
                     "/mnt/etc/locale.conf",
                     "en_US.UTF-8",
-                    locale.split(' ').collect::<Vec<&str>>()[i]
+                    locale.split(' ').collect::<Vec<&str>>()[i],
                 ),
-                format!("Set locale {} in /etc/locale.conf", locale.split(' ').collect::<Vec<&str>>()[i]).as_str()
+                format!(
+                    "Set locale {} in /etc/locale.conf",
+                    locale.split(' ').collect::<Vec<&str>>()[i]
+                )
+                .as_str(),
             );
         }
     }

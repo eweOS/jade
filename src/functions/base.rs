@@ -190,14 +190,9 @@ pub fn install_flatpak() {
 
 pub fn install_zram() {
     install(vec!["zram-generator"]);
-    files::create_file(
-        "/mnt/etc/systemd/zram-generator.conf"
-    );
+    files::create_file("/mnt/etc/systemd/zram-generator.conf");
     files_eval(
-        files::append_file(
-            "/mnt/etc/systemd/zram-generator.conf",
-            "[zram0]"
-        ),
-        "Write zram-generator config"
+        files::append_file("/mnt/etc/systemd/zram-generator.conf", "[zram0]"),
+        "Write zram-generator config",
     );
 }
