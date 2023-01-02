@@ -57,6 +57,14 @@ pub fn install_base_packages(kernel: String) {
         "pipewire-jack",
         "wireplumber",
         "crystal-first-setup",
+        "power-profiles-daemon",
+        "cups",
+        "cups-pdf",
+        "bluez",
+        "bluez-cups",
+        "ntfs-3g",
+        "bash-completion",
+        "zsh-completions",
     ]);
     files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
 }
