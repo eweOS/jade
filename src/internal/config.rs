@@ -176,7 +176,7 @@ pub fn read_config(configpath: PathBuf) {
         "enlightenment" => desktops::install_desktop_setup(DesktopSetup::Enlightenment),
         "lxqt" => desktops::install_desktop_setup(DesktopSetup::Lxqt),
         "sway" => desktops::install_desktop_setup(DesktopSetup::Sway),
-        "i3-gaps" => desktops::install_desktop_setup(DesktopSetup::I3gaps),
+        "i3" => desktops::install_desktop_setup(DesktopSetup::I3),
         "herbstluftwm" => desktops::install_desktop_setup(DesktopSetup::Herbstluftwm),
         "awesome" => desktops::install_desktop_setup(DesktopSetup::Awesome),
         "bspwm" => desktops::install_desktop_setup(DesktopSetup::Bspwm),

@@ -15,7 +15,7 @@ pub fn install_desktop_setup(desktop_setup: DesktopSetup) {
         DesktopSetup::Enlightenment => install_enlightenment(),
         DesktopSetup::Lxqt => install_lxqt(),
         DesktopSetup::Sway => install_sway(),
-        DesktopSetup::I3gaps => install_i3gaps(),
+        DesktopSetup::I3 => install_i3(),
         DesktopSetup::Herbstluftwm => install_herbstluftwm(),
         DesktopSetup::Awesome => install_awesome(),
         DesktopSetup::Bspwm => install_bspwm(),
@@ -97,10 +97,10 @@ fn install_herbstluftwm() {
     enable_dm("lightdm");
 }
 
-fn install_i3gaps() {
+fn install_i3() {
     install(vec![
         "xorg",
-        "i3-gaps",
+        "i3-wm",
         "dmenu",
         "i3lock",
         "i3status",

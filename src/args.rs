@@ -270,8 +270,8 @@ pub enum DesktopSetup {
     #[clap(name = "sway")]
     Sway,
 
-    #[clap(name = "i3gaps")]
-    I3gaps,
+    #[clap(name = "i3")]
+    I3,
 
     #[clap(name = "herbstluftwm")]
     Herbstluftwm,
