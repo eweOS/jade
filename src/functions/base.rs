@@ -65,6 +65,7 @@ pub fn install_base_packages(kernel: String) {
         "ntfs-3g",
         "bash-completion",
         "zsh-completions",
+        "ttf-liberation",
     ]);
     files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
 }
