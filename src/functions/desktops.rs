@@ -44,6 +44,7 @@ fn install_bspwm() {
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
+        "xdg-user-dirs",
     ]);
     files_eval(
         files::append_file(
@@ -65,6 +66,7 @@ fn install_awesome() {
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
+        "xdg-user-dirs",
     ]);
     files_eval(
         files::append_file(
@@ -86,6 +88,7 @@ fn install_herbstluftwm() {
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
+        "xdg-user-dirs",
     ]);
     files_eval(
         files::append_file(
@@ -108,6 +111,8 @@ fn install_i3() {
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
+        "xdg-user-dirs",
+        "dex",
     ]);
     files_eval(
         files::append_file(
@@ -115,6 +120,10 @@ fn install_i3() {
             "[SeatDefaults]\ngreeter-session=lightdm-gtk-greeter\n",
         ),
         "Add lightdm greeter",
+    );
+    files_eval(
+        files::append_file("/mnt/etc/i3/config", "exec_always --no-startup-id dex -a\n"),
+        "Add dex to i3 config for autostart",
     );
     enable_dm("lightdm");
 }
@@ -134,7 +143,16 @@ fn install_sway() {
         "pipewire-jack",
         "wireplumber",
         "sddm",
+        "xdg-user-dirs",
+        "dex",
     ]);
+    files_eval(
+        files::append_file(
+            "/mnt/etc/sway/config",
+            "exec_always --no-startup-id dex -a\n",
+        ),
+        "Add dex to sway config for autostart",
+    );
     enable_dm("sddm");
 }
 

@@ -67,6 +67,22 @@ pub fn install_base_packages(kernel: String) {
         "ttf-liberation",
     ]);
     files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
+
+    exec_eval(
+        exec_chroot(
+            "systemctl",
+            vec![String::from("enable"), String::from("bluetooth")],
+        ),
+        "Enable bluetooth",
+    );
+
+    exec_eval(
+        exec_chroot(
+            "systemctl",
+            vec![String::from("enable"), String::from("cups")],
+        ),
+        "Enable CUPS",
+    );
 }
 
 pub fn genfstab() {
