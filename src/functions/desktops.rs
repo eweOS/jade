@@ -122,10 +122,7 @@ fn install_i3() {
         "Add lightdm greeter",
     );
     files_eval(
-        files::append_file(
-            "/mnt/etc/i3/config",
-            "exec_always --no-startup-id dex -a\n",
-        ),
+        files::append_file("/mnt/etc/i3/config", "exec_always --no-startup-id dex -a\n"),
         "Add dex to i3 config for autostart",
     );
     enable_dm("lightdm");
