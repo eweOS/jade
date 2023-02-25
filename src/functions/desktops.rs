@@ -44,7 +44,7 @@ fn install_bspwm() {
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
-        "xdg-user-dirs"
+        "xdg-user-dirs",
     ]);
     files_eval(
         files::append_file(
@@ -66,7 +66,7 @@ fn install_awesome() {
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
-        "xdg-user-dirs"
+        "xdg-user-dirs",
     ]);
     files_eval(
         files::append_file(
@@ -88,7 +88,7 @@ fn install_herbstluftwm() {
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
-        "xdg-user-dirs"
+        "xdg-user-dirs",
     ]);
     files_eval(
         files::append_file(
@@ -111,7 +111,7 @@ fn install_i3() {
         "lightdm",
         "lightdm-gtk-greeter",
         "lightdm-gtk-greeter-settings",
-        "xdg-user-dirs"
+        "xdg-user-dirs",
     ]);
     files_eval(
         files::append_file(
@@ -138,7 +138,7 @@ fn install_sway() {
         "pipewire-jack",
         "wireplumber",
         "sddm",
-        "xdg-user-dirs"
+        "xdg-user-dirs",
     ]);
     enable_dm("sddm");
 }

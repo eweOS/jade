@@ -79,11 +79,10 @@ pub fn install_base_packages(kernel: String) {
     exec_eval(
         exec_chroot(
             "systemctl",
-            vec![String::from("enable"), String::from("cups")]
+            vec![String::from("enable"), String::from("cups")],
         ),
-        "Enable CUPS"
+        "Enable CUPS",
     );
-
 }
 
 pub fn genfstab() {
