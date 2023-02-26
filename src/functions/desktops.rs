@@ -113,6 +113,7 @@ fn install_i3() {
         "lightdm-gtk-greeter-settings",
         "xdg-user-dirs",
         "dex",
+        "polkit-gnome",
     ]);
     files_eval(
         files::append_file(
@@ -122,8 +123,15 @@ fn install_i3() {
         "Add lightdm greeter",
     );
     files_eval(
-        files::append_file("/mnt/etc/i3/config", "exec_always --no-startup-id dex -a\n"),
+        files::append_file("/mnt/etc/i3/config", "exec --no-startup-id dex -a\n"),
         "Add dex to i3 config for autostart",
+    );
+    files_eval(
+        files::append_file(
+            "/mnt/etc/i3/config",
+            "exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1",
+        ),
+        "Add polkit gnome to i3 config",
     );
     enable_dm("lightdm");
 }
@@ -145,13 +153,21 @@ fn install_sway() {
         "sddm",
         "xdg-user-dirs",
         "dex",
+        "polkit-gnome",
     ]);
     files_eval(
         files::append_file(
             "/mnt/etc/sway/config",
-            "exec_always --no-startup-id dex -a\n",
+            "exec --no-startup-id dex -a\n",
         ),
         "Add dex to sway config for autostart",
+    );
+    files_eval(
+        files::append_file(
+            "/mnt/etc/sway/config",
+            "exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1",
+        ),
+        "Add polkit gnome to sway config",
     );
     enable_dm("sddm");
 }
