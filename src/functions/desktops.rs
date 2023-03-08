@@ -156,10 +156,7 @@ fn install_sway() {
         "polkit-gnome",
     ]);
     files_eval(
-        files::append_file(
-            "/mnt/etc/sway/config",
-            "exec --no-startup-id dex -a\n",
-        ),
+        files::append_file("/mnt/etc/sway/config", "exec --no-startup-id dex -a\n"),
         "Add dex to sway config for autostart",
     );
     files_eval(
