@@ -24,6 +24,7 @@ pub fn install_base_packages(kernel: String) {
         // Base Arch
         "base",
         kernel_to_install,
+        format!("{kernel_to_install}-headers").as_str(),
         "linux-firmware",
         "systemd-sysvcompat",
         "networkmanager",
