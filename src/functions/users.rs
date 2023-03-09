@@ -26,7 +26,7 @@ pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: boo
         "fish" => "/usr/bin/fish",
         "tcsh" => "/usr/bin/tcsh",
         "zsh" => "/usr/bin/zsh",
-        &_ => "/usr/bin/fish",
+        &_ => "/usr/bin/bash",
     };
     exec_eval(
         exec_chroot(
