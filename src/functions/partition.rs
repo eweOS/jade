@@ -102,7 +102,9 @@ pub fn partition(
             } else {
                 partition_no_efi(&device, unakite);
             }
-            if device.to_string_lossy().contains("nvme") {
+            if device.to_string_lossy().contains("nvme")
+                || device.to_string_lossy().contains("mmcblk")
+            {
                 part_nvme(&device, efi, unakite);
             } else {
                 part_disk(&device, efi, unakite);
