@@ -66,6 +66,7 @@ pub fn install_base_packages(kernel: String) {
         "bash-completion",
         "zsh-completions",
         "ttf-liberation",
+        "dnsmasq",
     ]);
     files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
 
