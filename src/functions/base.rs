@@ -85,14 +85,6 @@ pub fn install_base_packages(kernel: String) {
         ),
         "Enable CUPS",
     );
-
-    exec_eval(
-        exec_chroot(
-            "systemctl",
-            vec![String::from("enable"), String::from("dnsmasq")],
-        ),
-        "Enable dnsmasq",
-    );
 }
 
 pub fn genfstab() {
