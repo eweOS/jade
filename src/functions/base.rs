@@ -49,6 +49,7 @@ pub fn install_base_packages(kernel: String) {
         "noto-fonts-cjk",
         "noto-fonts-extra",
         "ttf-nerd-fonts-symbols-common",
+        "vazirmatn-fonts",
         // Common packages for all desktops
         "xterm",
         "pipewire",
