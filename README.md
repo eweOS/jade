@@ -1,123 +1,122 @@
-<p align="center">
-  <a href="https://git.getcryst.al/crystal/software/jade/">
-    <img src="https://getcryst.al/site/assets/other/logo.png" alt="Logo" width="150" height="150">
-  </a>
-</p>
-<h2 align="center">Jade</h2>
-<p align="center">
-    <a href="https://git.getcryst.al/crystal/info/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-GPL--3.0-blue.svg" alt="License">
-    <a href="https://git.getcryst.al/crystal/software/jade"><img alt="Gitlab issues" src="https://img.shields.io/gitlab/issues/open/crystal/software/jade?gitlab_url=https%3A%2F%2Fgit.getcryst.al%2F"></a>
-    <a href="https://git.getcryst.al/crystal/software/jade"><img alt="Gitlab merge requests" src="https://img.shields.io/gitlab/merge-requests/open/crystal/software/jade?gitlab_url=https%3A%2F%2Fgit.getcryst.al%2F"></a><br>
-    <a href="https://discord.gg/hYJgu8K5aA"><img alt="Discord" src="https://img.shields.io/discord/825473796227858482?color=blue&label=Discord&logo=Discord&logoColor=white"> </a>
-    <a href="https://git.getcryst.al/axtlos"><img src="https://img.shields.io/badge/Maintainer-@axtloss-brightgreen" alt=The maintainer of this repository" href="https://git.getcryst.al/axtlos"></a>
-    <a href="https://fosstodon.org/@crystal_linux"><img alt="Mastodon Follow" src="https://img.shields.io/mastodon/follow/108618426259408142?domain=https%3A%2F%2Ffosstodon.org">
-    <a href="https://twitter.com/crystal_linux"><img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/crystal_linux"></a>
-</p>
 
-<p align="center">Jade is an installer backend for crystal linux.</p>
+# Jade
+
+Jade is an installer backend for crystal linux.
 
 ## Backend usage
 
-### autopartition the drive
+### Autopartition the drive
 ```sh
 # autopartition /dev/sda with efi enabled
-jade partition auto /dev/sda --efi
+# crystal-jade partition auto /dev/sda --efi
 
 # autopartition /dev/nvmen0 with efi disabled
-jade partition auto /dev/nvmen0
+# crystal-jade partition auto /dev/nvmen0
 ```
 
-### install base packages
+### Install base packages
 ```sh
-jade install-base
+# crystal-jade install-base
 ```
 
-### install bootloader
+### Install bootloader
 ```sh
 # install as efi with esp being /boot/efi
-jade bootloader grub-efi /boot/efi
+# crystal-jade bootloader grub-efi /boot/efi
 
 # install as legacy on /dev/sda
-jade bootloader grub-legacy /dev/sda
+# crystal-jade bootloader grub-legacy /dev/sda
 ```
 
-### generate fstab
+### Generate fstab
 ```sh
-jade genfstab
+# crystal-jade genfstab
 ```
 
-### configuring locale settings
+### Configuring locale settings
 ```sh
 # set the keyboard layout to colemak, the timezone to Europe/Berlin and set en_US.UTF-8 as the locale
-jade locale colemak Europe/Berlin en_US.UTF-8 UTF-8
+# crystal-jade locale colemak Europe/Berlin en_US.UTF-8 UTF-8
 ```
 
-### configure network settings
+### Configure network settings
 ```sh
 # set the hostname to getcryst.al with ipv6 disabled
-jade networking getcryst.al 
+# crystal-jade networking getcryst.al 
 
 # set the hostname to getcryst.al with ipv6 enabled
-jade networking getcryst.al --ipv6
+# crystal-jade networking getcryst.al --ipv6
 ```
 
-### setup zramd
+### Setup zramd
 ```sh
 # install and enable zramd
-jade zramd
+# crystal-jade zramd
 ```
 
-### configure users
+### Configure users
 ```sh
 # make a new user called nonRootHaver, without sudo, easytohack as the password and bash as the default shell
-jade users new-user nonRootHaver easytohack bash
+# crystal-jade users new-user nonRootHaver easytohack bash
 
 # make a user called rootHaver, with sudo, omgsosuperhardtohack as the password and fish as the default shell
-jade users new-user rootHaver omgsuperhardtohack fish --hasroot
+# crystal-jade users new-user rootHaver omgsuperhardtohack fish --hasroot
 ```
 
-### set root password
+### Set root password
 ```sh
 # set the root password to 'muchSecurity,veryHardToHack'
-jade users root-password muchSecurity,veryHardToHack
+# crystal-jade users root-password muchSecurity,veryHardToHack
 ```
 
-### install a desktop environment
+### Install a desktop environment
 ```sh
 # install onyx
-jade desktops onyx
+# crystal-jade desktops onyx
 
 # install gnome
-jade desktops gnome
+# crystal-jade desktops gnome
 ```
 
-### setup timeshift
+### Setup timeshift
 ```sh
-jade setup-timeshift
+# crystal-jade setup-timeshift
 ```
 
-### setup flatpak
+### Setup flatpak
 ```sh
-jade flatpak
+# crystal-jade flatpak
 ```
 
-### debug logging
+### Debug logging
 
 debug messages:
 ```sh
-jade -v
+# crystal-jade -v
 ```
 
 traces:
 ```sh
-jade -vv
+# crystal-jade -vv
 ```
 
-## How to build:
 
-Tested on latest Cargo (1.60.0-nightly)
+## Non-secret Secret
+$ echo "crystal-jade_UWU=true" >> ~/.zshrc 
 
-<br>
+$ echo "crystal-jade_UWU=true" >> ~/.bashrc 
+
+$ set -Ux crystal-jade_UWU true 
+
+
+if you want to have your log and crash output be “cute”
+
+## 🙌 Contributing
+
+If you'd like to contribute to **Jade**, please follow the [Crystal Linux contributing guidelines](https://git.getcryst.al/crystal/info/-/blob/main/CONTRIBUTING.md)!
+
+This project uses `rustup`, to set up `cargo` for **Jade** development, please follow the guidelines below:
+
 
 #### Debug/development builds
 
@@ -127,9 +126,10 @@ Tested on latest Cargo (1.60.0-nightly)
 
 - `cargo build --release`
 
-## Non-secret Secret
-echo "JADE_UWU=true" >> ~/.zshrc <br>
-echo "JADE_UWU=true" >> ~/.bashrc <br>
-set -Ux JADE_UWU true <br>
-<br>
-if you want to have your log and crash output be “cute”
+
+
+## 📜 License
+
+[GPLv3-only](https://choosealicense.com/licenses/gpl-3.0/)
+
+![](https://git.getcryst.al/crystal/misc/branding/-/raw/main/banners/README-banner.png)
