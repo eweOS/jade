@@ -58,6 +58,7 @@ pub fn install_base_packages(kernel: String) {
         "pipewire-jack",
         "wireplumber",
         "crystal-first-setup",
+        "crystal-wallpapers",
         "power-profiles-daemon",
         "cups",
         "cups-pdf",
