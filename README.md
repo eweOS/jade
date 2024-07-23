@@ -1,112 +1,98 @@
 
 # Jade
 
-Jade is an installer backend for crystal linux.
+Jade is an installer backend for eweOS, which is a forked version of [Jade](https://gitlab.com/crystal-linux/software/jade/) from [Crystal Linux](https://getcryst.al).
 
 ## Backend usage
 
 ### Autopartition the drive
 ```sh
 # autopartition /dev/sda with efi enabled
-# crystal-jade partition auto /dev/sda --efi
+# jade partition auto /dev/sda --efi
 
 # autopartition /dev/nvmen0 with efi disabled
-# crystal-jade partition auto /dev/nvmen0
+# jade partition auto /dev/nvmen0
 ```
 
 ### Install base packages
 ```sh
-# crystal-jade install-base
+# jade install-base
 ```
 
 ### Install bootloader
 ```sh
 # install as efi with esp being /boot/efi
-# crystal-jade bootloader grub-efi /boot/efi
+# jade bootloader limine-efi /boot/efi
 
 # install as legacy on /dev/sda
-# crystal-jade bootloader grub-legacy /dev/sda
+# jade bootloader limine-legacy /dev/sda
 ```
 
 ### Generate fstab
 ```sh
-# crystal-jade genfstab
+# jade genfstab
 ```
 
 ### Configuring locale settings
 ```sh
 # set the keyboard layout to colemak, the timezone to Europe/Berlin and set en_US.UTF-8 as the locale
-# crystal-jade locale colemak Europe/Berlin en_US.UTF-8 UTF-8
+# jade locale colemak Europe/Berlin en_US.UTF-8 UTF-8
 ```
 
 ### Configure network settings
 ```sh
-# set the hostname to getcryst.al with ipv6 disabled
-# crystal-jade networking getcryst.al 
+# set the hostname to os.ewe.moe with ipv6 disabled
+# jade networking os.ewe.moe 
 
-# set the hostname to getcryst.al with ipv6 enabled
-# crystal-jade networking getcryst.al --ipv6
-```
-
-### Setup zramd
-```sh
-# install and enable zramd
-# crystal-jade zramd
+# set the hostname to os.ewe.moe with ipv6 enabled
+# jade networking os.ewe.moe --ipv6
 ```
 
 ### Configure users
 ```sh
 # make a new user called nonRootHaver, without sudo, easytohack as the password and bash as the default shell
-# crystal-jade users new-user nonRootHaver easytohack bash
+# jade users new-user nonRootHaver easytohack bash
 
 # make a user called rootHaver, with sudo, omgsosuperhardtohack as the password and fish as the default shell
-# crystal-jade users new-user rootHaver omgsuperhardtohack fish --hasroot
+# jade users new-user rootHaver omgsuperhardtohack fish --hasroot
 ```
 
 ### Set root password
 ```sh
 # set the root password to 'muchSecurity,veryHardToHack'
-# crystal-jade users root-password muchSecurity,veryHardToHack
+# jade users root-password muchSecurity,veryHardToHack
 ```
 
 ### Install a desktop environment
 ```sh
-# install onyx
-# crystal-jade desktops onyx
-
-# install gnome
-# crystal-jade desktops gnome
-```
-
-### Setup timeshift
-```sh
-# crystal-jade setup-timeshift
+# install hyprland
+# jade desktops hyprland
 ```
 
 ### Setup flatpak
 ```sh
-# crystal-jade flatpak
+# jade flatpak
 ```
 
 ### Debug logging
 
 debug messages:
 ```sh
-# crystal-jade -v
+# jade -v
 ```
 
 traces:
 ```sh
-# crystal-jade -vv
+# jade -vv
 ```
 
 
 ## Non-secret Secret
-$ echo "crystal-jade_UWU=true" >> ~/.zshrc 
+$ echo "JADE_UWU=true" >> ~/.zshrc 
 
-$ echo "crystal-jade_UWU=true" >> ~/.bashrc 
+$ echo "JADE_UWU=true" >> ~/.bashrc 
 
-$ set -Ux crystal-jade_UWU true 
+$ set -Ux JADE_UWU true 
 
 
 if you want to have your log and crash output be “cute”

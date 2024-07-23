@@ -17,6 +17,23 @@ pub fn exec_eval(
     }
 }
 
+pub fn exec_eval_noerr(
+    return_code: std::result::Result<std::process::ExitStatus, std::io::Error>,
+    logmsg: &str,
+    warn: bool,
+) {
+    match &return_code {
+        Ok(_) => {
+            log::info!("{}", logmsg);
+        }
+        Err(e) => {
+            if warn {
+                log::warn!("{} ERROR: {}", logmsg, e);
+            }
+        }
+    }
+}
+
 pub fn files_eval(return_code: std::result::Result<(), std::io::Error>, logmsg: &str) {
     match &return_code {
         Ok(_) => {

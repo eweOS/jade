@@ -14,11 +14,9 @@ struct Config {
     users: Vec<Users>,
     rootpass: String,
     desktop: String,
-    timeshift: bool,
     flatpak: bool,
-    zramd: bool,
+    mimalloc: bool,
     extra_packages: Vec<String>,
-    unakite: Unakite,
     kernel: String,
 }
 
@@ -39,7 +37,6 @@ struct Bootloader {
 #[derive(Serialize, Deserialize)]
 struct Locale {
     locale: Vec<String>,
-    keymap: String,
     timezone: String,
 }
 
@@ -55,15 +52,6 @@ struct Users {
     password: String,
     hasroot: bool,
     shell: String,
-}
-
-#[derive(Serialize, Deserialize)]
-struct Unakite {
-    enable: bool,
-    root: String,
-    oldroot: String,
-    efidir: String,
-    bootdev: String,
 }
 
 pub fn read_config(configpath: PathBuf) {
@@ -107,24 +95,20 @@ pub fn read_config(configpath: PathBuf) {
         config.partition.mode,
         config.partition.efi,
         &mut partitions,
-        config.unakite.enable,
     );
     base::install_base_packages(config.kernel);
     base::genfstab();
     println!();
     log::info!("Installing bootloader : {}", config.bootloader.r#type);
-    log::info!("Installing bootloader to : {}", config.bootloader.location);
-    if config.bootloader.r#type == "grub-efi" {
-        base::install_bootloader_efi(PathBuf::from(config.bootloader.location));
-    } else if config.bootloader.r#type == "grub-legacy" {
+    if config.bootloader.r#type == "limine-efi" {
+        base::install_bootloader_efi();
+    } else if config.bootloader.r#type == "limine-legacy" {
         base::install_bootloader_legacy(PathBuf::from(config.bootloader.location));
     }
     println!();
     log::info!("Adding Locales : {:?}", config.locale.locale);
-    log::info!("Using keymap : {}", config.locale.keymap);
     log::info!("Setting timezone : {}", config.locale.timezone);
     locale::set_locale(config.locale.locale.join(" "));
-    locale::set_keyboard(config.locale.keymap.as_str());
     locale::set_timezone(config.locale.timezone.as_str());
     println!();
     log::info!("Hostname : {}", config.networking.hostname);
@@ -135,11 +119,35 @@ pub fn read_config(configpath: PathBuf) {
         network::enable_ipv6();
     }
     println!();
-    println!("---------");
-    log::info!("Enabling zramd : {}", config.zramd);
-    if config.zramd {
-        base::install_zram();
+    log::info!("Setting root password : {}", config.rootpass);
+    users::root_pass(config.rootpass.as_str());
+    println!();
+    log::info!("Installing desktop : {:?}", config.desktop);
+    /*if let Some(desktop) = &config.desktop {
+        desktops::install_desktop_setup(*desktop);
+    }*/
+    match config.desktop.to_lowercase().as_str() {
+        "hyprland" => desktops::install_desktop_setup(DesktopSetup::Hyprland),
+        "fbcli" => desktops::install_desktop_setup(DesktopSetup::FBCli),
+        "none/diy" => desktops::install_desktop_setup(DesktopSetup::None),
+        _ => log::info!("No desktop setup selected!"),
     }
+    println!();
+    log::info!("Enabling flatpak : {}", config.flatpak);
+    if config.flatpak {
+        base::install_flatpak();
+    }
+    println!();
+    log::info!("Enabling mimalloc : {}", config.mimalloc);
+    if config.mimalloc {
+        base::install_mimalloc();
+    }
+    log::info!("Extra packages : {:?}", config.extra_packages);
+    let mut extra_packages: Vec<&str> = Vec::new();
+    for i in 0..config.extra_packages.len() {
+        extra_packages.push(config.extra_packages[i].as_str());
+    }
+    install(extra_packages);
     println!();
     println!("---------");
     for i in 0..config.users.len() {
@@ -155,113 +163,6 @@ pub fn read_config(configpath: PathBuf) {
             config.users[i].shell.as_str(),
         );
         println!("---------");
-    }
-    println!();
-    log::info!("Setting root password : {}", config.rootpass);
-    users::root_pass(config.rootpass.as_str());
-    println!();
-    log::info!("Installing desktop : {:?}", config.desktop);
-    /*if let Some(desktop) = &config.desktop {
-        desktops::install_desktop_setup(*desktop);
-    }*/
-    match config.desktop.to_lowercase().as_str() {
-        "onyx" => desktops::install_desktop_setup(DesktopSetup::Onyx),
-        "kde" => desktops::install_desktop_setup(DesktopSetup::Kde),
-        "plasma" => desktops::install_desktop_setup(DesktopSetup::Kde),
-        "mate" => desktops::install_desktop_setup(DesktopSetup::Mate),
-        "gnome" => desktops::install_desktop_setup(DesktopSetup::Gnome),
-        "cinnamon" => desktops::install_desktop_setup(DesktopSetup::Cinnamon),
-        "xfce" => desktops::install_desktop_setup(DesktopSetup::Xfce),
-        "budgie" => desktops::install_desktop_setup(DesktopSetup::Budgie),
-        "enlightenment" => desktops::install_desktop_setup(DesktopSetup::Enlightenment),
-        "lxqt" => desktops::install_desktop_setup(DesktopSetup::Lxqt),
-        "sway" => desktops::install_desktop_setup(DesktopSetup::Sway),
-        "i3" => desktops::install_desktop_setup(DesktopSetup::I3),
-        "herbstluftwm" => desktops::install_desktop_setup(DesktopSetup::Herbstluftwm),
-        "awesome" => desktops::install_desktop_setup(DesktopSetup::Awesome),
-        "bspwm" => desktops::install_desktop_setup(DesktopSetup::Bspwm),
-        "none/diy" => desktops::install_desktop_setup(DesktopSetup::None),
-        _ => log::info!("No desktop setup selected!"),
-    }
-    println!();
-    log::info!("Enabling timeshift : {}", config.timeshift);
-    if config.timeshift {
-        base::setup_timeshift();
-    }
-    println!();
-    log::info!("Enabling flatpak : {}", config.flatpak);
-    if config.flatpak {
-        base::install_flatpak();
-    }
-    log::info!("Extra packages : {:?}", config.extra_packages);
-    let mut extra_packages: Vec<&str> = Vec::new();
-    for i in 0..config.extra_packages.len() {
-        extra_packages.push(config.extra_packages[i].as_str());
-    }
-    install(extra_packages);
-    log::info!("Setup unakite");
-    if config.partition.mode == PartitionMode::Auto
-        && !config.partition.efi
-        && config.unakite.enable
-        && !config.partition.device.to_string().contains("nvme")
-    {
-        let root = PathBuf::from("/dev/").join(config.partition.device.as_str());
-        unakite::setup_unakite(
-            format!("{}2", root.to_str().unwrap()).as_str(),
-            format!("{}3", root.to_str().unwrap()).as_str(),
-            config.partition.efi,
-            "/boot",
-            format!("{}1", root.to_str().unwrap()).as_str(),
-        )
-    } else if config.partition.mode == PartitionMode::Auto
-        && config.partition.efi
-        && config.unakite.enable
-        && !config.partition.device.to_string().contains("nvme")
-    {
-        let root = PathBuf::from("/dev/").join(config.partition.device.as_str());
-        unakite::setup_unakite(
-            format!("{}2", root.to_str().unwrap()).as_str(),
-            format!("{}3", root.to_str().unwrap()).as_str(),
-            config.partition.efi,
-            "/boot/efi",
-            format!("{}1", root.to_str().unwrap()).as_str(),
-        )
-    } else if config.unakite.enable {
-        unakite::setup_unakite(
-            &config.unakite.root,
-            &config.unakite.oldroot,
-            config.partition.efi,
-            &config.unakite.efidir,
-            &config.unakite.bootdev,
-        );
-    } else if config.partition.mode == PartitionMode::Auto
-        && config.partition.efi
-        && config.unakite.enable
-        && config.partition.device.to_string().contains("nvme")
-    {
-        let root = PathBuf::from("/dev/").join(config.partition.device.as_str());
-        unakite::setup_unakite(
-            format!("{}p2", root.to_str().unwrap()).as_str(),
-            format!("{}p3", root.to_str().unwrap()).as_str(),
-            config.partition.efi,
-            "/boot/efi",
-            format!("{}p1", root.to_str().unwrap()).as_str(),
-        )
-    } else if config.partition.mode == PartitionMode::Auto
-        && !config.partition.efi
-        && config.unakite.enable
-        && config.partition.device.to_string().contains("nvme")
-    {
-        let root = PathBuf::from("/dev/").join(config.partition.device.as_str());
-        unakite::setup_unakite(
-            format!("{}p2", root.to_str().unwrap()).as_str(),
-            format!("{}p3", root.to_str().unwrap()).as_str(),
-            config.partition.efi,
-            "/boot",
-            format!("{}p1", root.to_str().unwrap()).as_str(),
-        )
-    } else {
-        log::info!("Unakite disabled");
     }
     println!("Installation finished! You may reboot now!")
 }

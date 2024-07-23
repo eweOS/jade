@@ -1,4 +1,5 @@
 use crate::internal::exec::*;
+use crate::internal::sysutils::{user_add_group, user_set_password};
 use crate::internal::*;
 use std::process::Command;
 
@@ -30,30 +31,19 @@ pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: boo
     };
     exec_eval(
         exec_chroot(
-            "useradd",
+            "adduser",
             vec![
-                String::from("-m"),
+                String::from("-D"),
                 String::from("-s"),
                 String::from(shell_path),
-                String::from("-p"),
-                String::from(password).replace('\n', ""),
                 String::from(username),
             ],
         ),
         format!("Create user {}", username).as_str(),
     );
+    user_set_password(username, password);
     if hasroot {
-        exec_eval(
-            exec_chroot(
-                "usermod",
-                vec![
-                    String::from("-aG"),
-                    String::from("wheel"),
-                    String::from(username),
-                ],
-            ),
-            format!("Add user {} to wheel group", username).as_str(),
-        );
+        user_add_group(username, "wheel");
         files_eval(
             files::sed_file(
                 "/mnt/etc/sudoers",
@@ -62,24 +52,12 @@ pub fn new_user(username: &str, hasroot: bool, password: &str, do_hash_pass: boo
             ),
             "Add wheel group to sudoers",
         );
-        files_eval(
-            files::append_file("/mnt/etc/sudoers", "\nDefaults pwfeedback\n"),
-            "Add pwfeedback to sudoers",
-        );
-        files_eval(
-            files::create_directory("/mnt/var/lib/AccountsService/users/"),
-            "Create /mnt/var/lib/AcountsService",
-        );
-        files::create_file(&format!("/mnt/var/lib/AccountsService/users/{}", username));
-        files_eval(
-            files::append_file(
-                &format!("/mnt/var/lib/AccountsService/users/{}", username),
-                r#"[User]
-                Session=onyx"#,
-            ),
-            format!("Populate AccountsService user file for {}", username).as_str(),
-        )
     }
+
+    user_add_group(username, "video");
+    user_add_group(username, "input");
+    user_add_group(username, "audio");
+    user_add_group(username, "seat");
 }
 
 pub fn hash_pass(password: &str) -> std::process::Output {
@@ -91,14 +69,5 @@ pub fn hash_pass(password: &str) -> std::process::Output {
 }
 
 pub fn root_pass(root_pass: &str) {
-    exec_eval(
-        exec_chroot(
-            "bash",
-            vec![
-                String::from("-c"),
-                format!(r#"'usermod --password {root_pass} root'"#),
-            ],
-        ),
-        "set root password",
-    );
+    user_set_password("root", root_pass);
 }

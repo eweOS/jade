@@ -19,7 +19,6 @@ fn main() {
                 args.mode,
                 args.efi,
                 &mut partitions,
-                args.unakite,
             );
         }
         Command::InstallBase(args) => {
@@ -28,18 +27,16 @@ fn main() {
         Command::GenFstab => {
             base::genfstab();
         }
-        Command::SetupTimeshift => base::setup_timeshift(),
         Command::Bootloader { subcommand } => match subcommand {
-            BootloaderSubcommand::GrubEfi { efidir } => {
-                base::install_bootloader_efi(efidir);
+            BootloaderSubcommand::LimineEfi => {
+                base::install_bootloader_efi();
             }
-            BootloaderSubcommand::GrubLegacy { device } => {
+            BootloaderSubcommand::LimineLegacy { device } => {
                 base::install_bootloader_legacy(device);
             }
         },
         Command::Locale(args) => {
             locale::set_locale(args.locales.join(" "));
-            locale::set_keyboard(&args.keyboard);
             locale::set_timezone(&args.timezone);
         }
         Command::Networking(args) => {
@@ -50,9 +47,6 @@ fn main() {
                 network::create_hosts();
             }
             network::set_hostname(&args.hostname);
-        }
-        Command::Zram => {
-            base::install_zram();
         }
         Command::Users { subcommand } => match subcommand {
             UsersSubcommand::NewUser(args) => {
@@ -68,20 +62,8 @@ fn main() {
                 users::root_pass(&password);
             }
         },
-        Command::Nix => {
-            base::install_homemgr();
-        }
         Command::Flatpak => {
             base::install_flatpak();
-        }
-        Command::Unakite(args) => {
-            unakite::setup_unakite(
-                &args.root,
-                &args.oldroot,
-                args.efi,
-                &args.efidir,
-                &args.bootdev,
-            );
         }
         Command::Config { config } => {
             crate::internal::config::read_config(config);

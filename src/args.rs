@@ -26,10 +26,6 @@ pub enum Command {
     #[clap(name = "genfstab")]
     GenFstab,
 
-    /// Setup Timeshift
-    #[clap(name = "setup-timeshift")]
-    SetupTimeshift,
-
     /// Install the bootloader
     #[clap(name = "bootloader")]
     Bootloader {
@@ -45,10 +41,6 @@ pub enum Command {
     #[clap(name = "networking")]
     Networking(NetworkingArgs),
 
-    /// Set up zramd
-    #[clap(name = "zramd")]
-    Zram,
-
     /// Configure users and passwords
     #[clap(name = "users")]
     Users {
@@ -56,17 +48,9 @@ pub enum Command {
         subcommand: UsersSubcommand,
     },
 
-    /// Install the Nix package manager
-    #[clap(name = "nix")]
-    Nix,
-
     /// Install Flatpak and enable FlatHub
     #[clap(name = "flatpak")]
     Flatpak,
-
-    /// Setup Unakite
-    #[clap(name = "unakite")]
-    Unakite(UnakiteArgs),
 
     /// Read Jade installation config
     #[clap(name = "config")]
@@ -99,9 +83,6 @@ pub struct PartitionArgs {
     #[clap(long)]
     pub efi: bool,
 
-    #[clap(long)]
-    pub unakite: bool,
-
     /// The partitions to use for manual partitioning
     #[clap(required_if_eq("mode", "Partition::Manual"), parse(try_from_str = parse_partitions))]
     pub partitions: Vec<Partition>,
@@ -111,25 +92,6 @@ pub struct PartitionArgs {
 pub struct InstallBaseArgs {
     #[clap(long)]
     pub kernel: String,
-}
-
-#[derive(Debug, Args)]
-pub struct UnakiteArgs {
-    /// Root device of Unakite
-    #[clap(long)]
-    pub root: String,
-    /// Root device of Crystal
-    #[clap(long)]
-    pub oldroot: String,
-    /// Whether the system is an EFI system
-    #[clap(long)]
-    pub efi: bool,
-    /// Boot directory (if not EFI), or EFI directory
-    #[clap(long)]
-    pub efidir: String,
-    /// Blockdev of boot device
-    #[clap(long)]
-    pub bootdev: String,
 }
 
 #[derive(Debug)]
@@ -168,16 +130,13 @@ pub enum PartitionMode {
 
 #[derive(Debug, Subcommand)]
 pub enum BootloaderSubcommand {
-    /// Install GRUB in EFI mode
-    #[clap(name = "grub-efi")]
-    GrubEfi {
-        /// The directory to install the EFI bootloader to
-        efidir: PathBuf,
-    },
+    /// Install Limine in EFI mode
+    #[clap(name = "limine-efi")]
+    LimineEfi,
 
-    /// Install GRUB in legacy (BIOS) mode
-    #[clap(name = "grub-legacy")]
-    GrubLegacy {
+    /// Install Limine in legacy (BIOS) mode
+    #[clap(name = "limine-legacy")]
+    LimineLegacy {
         /// The device to install the bootloader to
         device: PathBuf,
     },
@@ -240,47 +199,11 @@ pub struct NewUserArgs {
 
 #[derive(Debug, ArgEnum, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Serialize, Deserialize)]
 pub enum DesktopSetup {
-    #[clap(name = "onyx")]
-    Onyx,
+    #[clap(name = "hyprland")]
+    Hyprland,
 
-    #[clap(name = "gnome")]
-    Gnome,
-
-    #[clap(name = "kde", aliases = ["plasma"])]
-    Kde,
-
-    #[clap(name = "budgie")]
-    Budgie,
-
-    #[clap(name = "cinnamon")]
-    Cinnamon,
-
-    #[clap(name = "mate")]
-    Mate,
-
-    #[clap(name = "xfce")]
-    Xfce,
-
-    #[clap(name = "enlightenment")]
-    Enlightenment,
-
-    #[clap(name = "lxqt")]
-    Lxqt,
-
-    #[clap(name = "sway")]
-    Sway,
-
-    #[clap(name = "i3")]
-    I3,
-
-    #[clap(name = "herbstluftwm")]
-    Herbstluftwm,
-
-    #[clap(name = "awesome")]
-    Awesome,
-
-    #[clap(name = "bspwm")]
-    Bspwm,
+    #[clap(name = "fbcli")]
+    FBCli,
 
     #[clap(name = "None/DIY")]
     None,

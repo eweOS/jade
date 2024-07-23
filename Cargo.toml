@@ -1,14 +1,14 @@
 [package]
 name = "jade"
-description = "The new installer for crystal linux, contains backend and TUI"
-authors = ["Amy <axtlos@getcryst.al>"]
+description = "The new installer for eweOS, contains backend and TUI"
+authors = ["Amy <axtlos@getcryst.al>", "Yukari Chiba <i@0x7f.cc>"]
 version = "1.2.7"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [[bin]]
-name = "crystal-jade"
+name = "jade"
 path = "src/main.rs"
 
 [dependencies]
