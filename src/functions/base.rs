@@ -1,5 +1,5 @@
 use crate::internal::exec::*;
-use crate::internal::files::copy_file_wildcard;
+use crate::internal::files::copy_file;
 use crate::internal::sysutils::{catnest_reload, dinit_enable};
 use crate::internal::*;
 use log::warn;
@@ -69,12 +69,27 @@ pub fn install_bootloader_efi() {
     }
     exec_eval(
         exec_chroot(
-            "mkdir",
-            vec![String::from("-p"), String::from("/boot/efi/BOOT")],
+            "limine-install",
+            vec![
+                String::from("--target=auto-efi"),
+                format!("--efi-directory={}", efi_str),
+                String::from("--bootloader-id=eweos"),
+                String::from("--removable"),
+            ],
         ),
-        "create EFI boot directory",
+        "install limine as efi with --removable",
     );
-    copy_file_wildcard("/mnt/usr/share/limine/", "/mnt/boot/efi/BOOT/", "efi");
+    exec_eval(
+        exec_chroot(
+            "limine-install",
+            vec![
+                String::from("--target=auto-efi"),
+                format!("--efi-directory={}", efi_str),
+                String::from("--bootloader-id=eweos"),
+            ],
+        ),
+        "install limine as efi without --removable",
+    );
 }
 
 pub fn install_bootloader_legacy(device: PathBuf) {
@@ -82,6 +97,7 @@ pub fn install_bootloader_legacy(device: PathBuf) {
     if !device.exists() {
         crash(format!("The device {device:?} does not exist"), 1);
     }
+    copy_file("/mnt/usr/share/limine/limine-bios.sys", "/mnt/boot/limine-bios.sys");
     let device = device.to_string_lossy().to_string();
     exec_eval(
         exec_chroot("limine", vec![String::from("bios-install"), device]),
