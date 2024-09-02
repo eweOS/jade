@@ -50,9 +50,9 @@ fn install_bootloader_common() {
     exec_eval(
         exec_chroot(
             "limine-mkconfig",
-            vec![String::from("-o"), String::from("/boot/limine.cfg")],
+            vec![String::from("-o"), String::from("/boot/limine.conf")],
         ),
-        "create limine.cfg",
+        "create limine.conf",
     );
 }
 
