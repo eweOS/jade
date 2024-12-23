@@ -199,8 +199,11 @@ pub struct NewUserArgs {
 
 #[derive(Debug, ArgEnum, Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Serialize, Deserialize)]
 pub enum DesktopSetup {
-    #[clap(name = "hyprland")]
-    Hyprland,
+    #[clap(name = "xfce")]
+    Xfce,
+
+    #[clap(name = "lxqt")]
+    LXQt,
 
     #[clap(name = "fbcli")]
     FBCli,

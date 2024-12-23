@@ -4,11 +4,12 @@ use crate::internal::*;
 pub fn dinit_enable(service: &str) {
     exec_eval(
         exec_chroot(
-            "ln",
+            "dinitctl",
             vec![
                 String::from("-s"),
-                format!("/usr/lib/dinit.d/system/{service}"),
-                format!("/etc/dinit.d/boot.d/"),
+                String::from("-o"),
+                format!("enable"),
+                format!("{service}"),
             ],
         ),
         format!("Enabling system service {service}").as_str(),

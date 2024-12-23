@@ -127,7 +127,8 @@ pub fn read_config(configpath: PathBuf) {
         desktops::install_desktop_setup(*desktop);
     }*/
     match config.desktop.to_lowercase().as_str() {
-        "hyprland" => desktops::install_desktop_setup(DesktopSetup::Hyprland),
+        "xfce" => desktops::install_desktop_setup(DesktopSetup::Xfce),
+        "lxqt" => desktops::install_desktop_setup(DesktopSetup::LXQt),
         "fbcli" => desktops::install_desktop_setup(DesktopSetup::FBCli),
         "none/diy" => desktops::install_desktop_setup(DesktopSetup::None),
         _ => log::info!("No desktop setup selected!"),
