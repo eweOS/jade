@@ -26,7 +26,7 @@
     }
   ],
   "rootpass": "ewe",
-  "desktop": "hyprland",
+  "desktop": "xfce",
   "extra_packages": ["firefox", "vim", "git", "fastfetch"],
   "kernel": "linux",
   "flatpak": true,

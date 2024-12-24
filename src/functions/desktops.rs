@@ -7,7 +7,8 @@ use crate::internal::*;
 pub fn install_desktop_setup(desktop_setup: DesktopSetup) {
     log::debug!("Installing {:?}", desktop_setup);
     match desktop_setup {
-        DesktopSetup::Hyprland => install_hyprland(),
+        DesktopSetup::Xfce => install_xfce(),
+        DesktopSetup::LXQt => install_lxqt(),
         DesktopSetup::FBCli => install_fbcli(),
         DesktopSetup::None => log::debug!("No desktop setup selected"),
     }
@@ -15,11 +16,6 @@ pub fn install_desktop_setup(desktop_setup: DesktopSetup) {
 
 fn install_desktop_common() {
     install(vec![
-        // desktop app
-        "rofi",
-        "foot",
-        "swww",
-        "waybar",
         // desktop service
         "pipewire",
         "wireplumber",
@@ -37,11 +33,7 @@ fn install_desktop_common() {
     dinit_enable_user("pipewire-pulse");
     dinit_enable_user("wireplumber");
 
-    // TODO: no m option for catnest workaround
     catnest_reload();
-    user_add_group("greeter", "video");
-    user_add_group("greeter", "input");
-    user_add_group("greeter", "seat");
 
     // TODO: need modular greeter config
     files_eval(
@@ -54,9 +46,14 @@ fn install_desktop_common() {
     )
 }
 
-fn install_hyprland() {
+fn install_lxqt() {
     install_desktop_common();
-    install(vec!["hyprland"]);
+    install(vec!["lxqt", "labwc"]);
+}
+
+fn install_xfce() {
+    install_desktop_common();
+    install(vec!["xfce4", "xfce4-goodies", "labwc"]);
 }
 
 fn install_fbcli() {

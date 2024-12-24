@@ -25,9 +25,9 @@ pub fn install_base_packages(kernel: String) {
         format!("{kernel_to_install}-headers").as_str(),
         "linux-firmware",
         "sudo",
-        "connman",
+        "networkmanager",
     ]);
-    dinit_enable("connman");
+    dinit_enable("networkmanager");
     files::copy_file("/etc/pacman.conf", "/mnt/etc/pacman.conf");
     catnest_reload();
 }
